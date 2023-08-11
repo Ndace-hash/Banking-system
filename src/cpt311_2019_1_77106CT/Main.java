@@ -2,12 +2,18 @@ package cpt311_2019_1_77106CT;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.io.File;
 
 public class Main {
 	final static Scanner input = new Scanner(System.in);
 	static ArrayList<Customer> customers = new ArrayList<Customer>();
+	static Database db;
 
 	public static void main(String[] args) {
+		File file = new File("c:/Users/user1/Documents/users.csv");
+		
+		String[] DBTableFields = {"customer ID","First Name","Last Name","Account Number"};
+		db = new Database(file, DBTableFields);
 		
 		System.out.println("What do you want to do?");
 		System.out.println("1. Create account");
@@ -16,12 +22,20 @@ public class Main {
 		System.out.println("4. Deposit");
 		System.out.println("5. Withdrawal");
 		
-		int choice = input.nextInt();
-		
+		boolean wrongInput = false;
+		String choice = input.next();
+		do {
 		switch(choice) {
-		case 1:
+		case "1":
+			wrongInput = false;
 			createAccount();
-		}
+			break;
+		default:
+			System.out.println("Invalid option. Please try again.");
+			wrongInput = true;
+			break;
+		
+		}}while(wrongInput);
 //		Customer zach = new Customer("ZaccheausYisa", "Zaccheaus" , "Yisa");
 //		zach.addAccount(new SavingsAccount("1",zach, 2.4));
 //		zach.addAccount(new CurrentAccount("3"));
@@ -56,31 +70,39 @@ public class Main {
 			System.out.println("\nSelect type of account:");
 			System.out.println("1. Savings");
 			System.out.println("2. Current");
-			int choice = input.nextInt();
+			String choice = input.next();
 			
-			int randomValue;
+			String randomValue="";
 			String accountNumber;
 			Customer customer;
 			switch(choice) {
-			case 1:
-				randomValue = (int)Math.floor(Math.random() * 99999999);
-				accountNumber = "30"+randomValue;
+			case "1":
+				for(int i=1;i<=8;i++) {
+					randomValue += ""+ (int)Math.floor(Math.random() * 10);
+				}
+				accountNumber ="30"+randomValue;
 				customer = new Customer(customerId,firstName,lastName); 
 				customers.add(customer);
-				customer.addAccount(new SavingsAccount(accountNumber, customer));
-				System.out.println("You have successfully created a new account.");
 				System.out.println("Your account number is "+ accountNumber);
+				System.out.println("You have successfully created a new account.");
+				db.writeToDB(customer.getCustomerId(),customer.getFirstName(),customer.getLastName(),accountNumber);
+				customer.addAccount(new SavingsAccount(accountNumber, customer));
 				wrongInput = false;
 				break;
 				
-			case 2:
-				randomValue = (int)Math.floor(Math.random() * 99999999);
+			case "2":
+				for(int i=1;i<=8;i++) {
+					randomValue += ""+ (int)Math.floor(Math.random() * 10);
+				}
 				accountNumber = "31"+randomValue;
 				customer = new Customer(customerId,firstName,lastName); 
 				customers.add(customer);
 				customer.addAccount(new CurrentAccount(accountNumber, customer));
 				System.out.println("You have successfully created a new account.");
 				System.out.println("Your account number is "+ accountNumber);
+				db.writeToDB(customer.getCustomerId(),customer.getFirstName(),customer.getLastName(),accountNumber);
+				customer.addAccount(new SavingsAccount(accountNumber, customer));
+				
 				wrongInput = false;
 				break;
 			default:
