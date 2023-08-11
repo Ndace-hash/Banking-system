@@ -14,6 +14,8 @@ public class Main {
 		
 		String[] DBTableFields = {"customer ID","First Name","Last Name","Account Number"};
 		db = new Database(file, DBTableFields);
+		boolean wrongInput = false;
+		do {
 		
 		System.out.println("What do you want to do?");
 		System.out.println("1. Create account");
@@ -22,20 +24,19 @@ public class Main {
 		System.out.println("4. Deposit");
 		System.out.println("5. Withdrawal");
 		
-		boolean wrongInput = false;
 		String choice = input.next();
-		do {
-		switch(choice) {
-		case "1":
-			wrongInput = false;
-			createAccount();
-			break;
-		default:
-			System.out.println("Invalid option. Please try again.");
-			wrongInput = true;
-			break;
-		
-		}}while(wrongInput);
+			switch(choice) {
+			case "1":
+				wrongInput = false;
+				createAccount();
+				break;
+			default:
+				System.out.println("Invalid option. Please try again.");
+				wrongInput = true;
+				break;
+			
+			}
+		}while(wrongInput);
 //		Customer zach = new Customer("ZaccheausYisa", "Zaccheaus" , "Yisa");
 //		zach.addAccount(new SavingsAccount("1",zach, 2.4));
 //		zach.addAccount(new CurrentAccount("3"));
@@ -98,8 +99,8 @@ public class Main {
 				customer = new Customer(customerId,firstName,lastName); 
 				customers.add(customer);
 				customer.addAccount(new CurrentAccount(accountNumber, customer));
-				System.out.println("You have successfully created a new account.");
 				System.out.println("Your account number is "+ accountNumber);
+				System.out.println("You have successfully created a new account.");
 				db.writeToDB(customer.getCustomerId(),customer.getFirstName(),customer.getLastName(),accountNumber);
 				customer.addAccount(new SavingsAccount(accountNumber, customer));
 				
